@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Simple Quiz</title>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+
+body {
+font-family: Arial, sans-serif;
+
+margin: 20px;
+
+padding: 20px;
+
+background-color: #f3edf1;
+
+}
+
+.question {
+
+font-size: 20px;
+
+margin: 10px 0;
+
+}
+
+.options {
+
+list-style-type: none;
+
+padding: 0;
+
+}
+
+.options li {
+
+margin: 5px 0;
+
+}
+
+.score {
+
+font-size: 24px;
+
+color: green;
+}
+p {
+  border: 2px solid rgb(8, 96, 108);
+}
+</style>
+</style>
+
+</head>
+
+<body>
+
+<h1>Simple Quiz</h1>
+
+<div id="quiz-container">
+
+<div class="question"></div>
+
+<ul class="options"></ul>
+
+<button id="next-button">Next Question</button>
+
+<div class="score"></div>
+
+</div>
+
+<div id="timer">time-left: <span id="time-left">10</span> seconds</div>
+
+<div id="final-score" style="display: none; font-size: 24px; color: rgb(16, 152, 226);"></div>
+
+<script>
+
+$(document).ready(function() {
+
+const questions = [
+
+{
+
+question: "What is the capital of France?",
+
+options: ["Berlin", "Madrid", "Paris", "Rome"],
+
+answer: "Paris"
+
+},
+
+{
+
+question: "What is 2 + 2?",
+
+options: ["3", "4", "5", "6"],
+
+answer: "4"
+
+},
+
+{
+
+question: "Which planet is known as the Red Planet?",
+
+options: ["Earth", "Venus", "Mars", "Jupiter"],
+
+answer: "Mars"
+
+},
+
+{
+
+question: "What is the largest ocean on Earth?",
+
+options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+
+answer: "Pacific Ocean"
+
+},
+
+// Additional questions added
+{
+
+question: "Who wrote 'Romeo and Juliet'?",
+
+options: ["William Shakespeare", "Charles Dickens", "Mark Twain", "Jane Austen"],
+
+answer: "William Shakespeare"
+
+},
+
+{
+
+question: "What is the boiling point of water in Celsius?",
+
+options: ["90°C", "100°C", "110°C", "120°C"],
+
+answer: "100°C"
+
+},
+
+{
+
+question: "Which gas do plants primarily use for photosynthesis?",
+
+options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"],
+
+answer: "Carbon Dioxide"
+
+},
+
+{
+
+question: "What is the smallest prime number?",
+
+options: ["0", "1", "2", "3"],
+
+answer: "2"
+
+}
+
+];
+
+
+
+let currentQuestion = 0;
+
+let score = 0;
+// Modify the displayQuestion function to remove the timer logic
+function displayQuestion() {
+    if (currentQuestion < questions.length) {
+        const questionData = questions[currentQuestion];
+        $('.question').text(questionData.question);
+        $('.options').empty();
+
+        questionData.options.forEach(function (option) {
+            $('.options').append('<li>' + option + '</li>');
+        });
+    } else {
+        $('#quiz-container').hide();
+        $('.score').text('Your score: ' + score + '/' + questions.length);
+    }
+}
+
+// Remove timer-related logic from event listeners
+$(document).on('click', '.options li', function () {
+    const selectedOption = $(this).text();
+
+    if (selectedOption === questions[currentQuestion].answer) {
+        score++;
+        $(this).css('color', 'green'); // Highlight correct answer in green
+        $(this).append(' <span>&#10004;</span>'); // Add a checkmark for correct answer
+    } else {
+        $(this).css('color', 'red'); // Highlight wrong answer in red
+        $(this).append(' <span>&#10008;</span>'); // Add a cross for wrong answer
+    }
+
+    // Disable further clicks on options for the current question
+    $('.options li').off('click');
+
+    // Move to the next question after a short delay
+    setTimeout(function () {
+        currentQuestion++;
+        displayQuestion();
+    }, 1000);
+});
+
+$('#next-button').click(function() {
+    displayQuestion();
+});
+
+// Start the quiz
+displayQuestion();
+
+});
+
+</script>
+
+</body>
+
+</html>
+
